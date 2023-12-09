@@ -1,0 +1,1 @@
+File.foreach("./../dictionary/dictionary.txt") { |line| puts(line)}

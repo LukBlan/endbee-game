@@ -1,0 +1,3 @@
+class ConsoleInterface
+
+end
