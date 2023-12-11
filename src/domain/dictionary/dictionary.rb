@@ -6,14 +6,12 @@ class Dictionary
   def valid_word(word)
     word_hash = create_hash_from_word(word)
 
-    @dictionary.any? do |dict_key, value|
-      value.any? do |sub_key, words|
-        words.any? do |dict_word|
-          if word.length < dict_word.length
-            dict_word_includes_word_chars(dict_word, word_hash.clone)
-          else
-            false
-          end
+    @dictionary.any? do |key, words|
+      words.any? do |dict_word|
+        if word.length < dict_word.length
+          dict_word_includes_word_chars(dict_word, word_hash.clone)
+        else
+          false
         end
       end
     end
@@ -26,11 +24,16 @@ class Dictionary
   end
 
   def dict_word_includes_word_chars(dict_word, word_hash)
-    dict_word.each do |char|
+    dict_word.each_char do |char|
       word_hash[char] -= 1
     end
 
     word_hash.all? { |key, value| value <= 0 }
+  end
+
+  def have_word?(word)
+    first_letter = word[0]
+    @dictionary[first_letter].include?(word)
   end
 
 end

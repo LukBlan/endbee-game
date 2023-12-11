@@ -13,20 +13,23 @@ class ConsoleInterface
   end
 
   def play_round
-    player = @game.current_player
-    new_letter = nil
+    while !@game.round_over?
+      player = @game.current_player
+      new_letter = get_letter_from_player(player)
+      @game.add_letter(new_letter)
+      @game.next_turn
+    end
+  end
 
+  def get_letter_from_player(player)
     loop do
       new_letter = player.get_letter
 
       if @game.valid_play?(new_letter)
-        break
+        return new_letter
       end
 
       puts("Invalid play, try again")
     end
-
-    @game.add_letter(new_letter)
-    @game.next_turn
   end
 end

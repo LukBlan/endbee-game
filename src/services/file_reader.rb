@@ -5,9 +5,7 @@ class FileReader
     File.foreach(file_name) do |word|
       read_word = word.chomp
       first_char = read_word[0]
-      second_char = read_word[1]
-
-      words[first_char][second_char] << read_word
+      words[first_char] << read_word
     end
 
     words
@@ -15,7 +13,7 @@ class FileReader
 
   def get_hash_of_words
     Hash.new do |hash, key|
-      hash[key] = Hash.new { |inner_hash, inner_key| inner_hash[inner_key] = [] }
+      hash[key] = []
     end
   end
 end
