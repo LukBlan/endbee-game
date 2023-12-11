@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Game
+  attr_reader :fragment
+
   def initialize(players, dictionary)
     @dictionary = dictionary
     @fragment = []
@@ -17,7 +19,6 @@ class Game
   end
 
   def next_turn
-    puts(@fragment)
     @turn_controller = (@turn_controller + 1) % @players.length
   end
 
