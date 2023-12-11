@@ -27,7 +27,6 @@ class Game
   end
 
   def round_over?
-    word = @fragment.join("")
-    @fragment.length >= 3 && @dictionary.have_word?(word)
+    @fragment.length >= 3 && @dictionary.have_word?(@fragment)
   end
 end

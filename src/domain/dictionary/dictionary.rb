@@ -32,8 +32,19 @@ class Dictionary
   end
 
   def have_word?(word)
-    first_letter = word[0]
-    @dictionary[first_letter].include?(word)
+    word_hash = create_hash_from_word(word)
+
+    word.any? do |char|
+      dict_words = @dictionary[char]
+
+      dict_words.any? do |dict_word|
+        if dict_word.length == word.length
+          dict_word_includes_word_chars(dict_word, word_hash.clone)
+        else
+          false
+        end
+      end
+    end
   end
 
 end
