@@ -13,18 +13,40 @@ class ConsoleInterface
 
   def configure_game(game_factory)
     puts("Starting configuration...")
-    players_names = []
-    @console_formatter.print_indented_message("Amount of players? ")
-    players_amount = gets.chomp.to_i
+    players_amount = get_amount_of_players
+    puts
+    players_names = get_players_names(players_amount)
+    @game = game_factory.create(players_names)
+  end
 
-    players_amount.times do |number|
-      message = "Player #{number + 1} name: "
-      @console_formatter.print_indented_message(message)
-      players_name = gets.chomp
-      players_names << players_name
+  def get_amount_of_players
+    @console_formatter.print_indented_message("Amount of players? ")
+    gets.chomp.to_i
+  end
+
+  def get_players_names(players_amount)
+    players_names = []
+
+    players_amount.times do |player_number|
+      player_name = get_player_name(player_number, players_names)
+      players_names << player_name
     end
 
-    @game = game_factory.create(players_names)
+    players_names
+  end
+
+  def get_player_name(player_number, players_names)
+    loop do
+      message = "Player #{player_number + 1} name: "
+      @console_formatter.print_indented_message(message)
+      players_name = gets.chomp
+
+      if !players_names.include?(players_name)
+        return players_name
+      end
+
+      puts("Name already exits, try again\n")
+    end
   end
 
   def show_game_result
