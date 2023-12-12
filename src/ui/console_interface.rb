@@ -7,16 +7,42 @@ class ConsoleInterface
   def init
     self.show_init_message
     self.game_loop
+    self.show_game_result
+  end
+
+  def show_game_result
+    player = @game.get_winner
+    @console_formatter.print_message_between_dashes("GAME OVER")
+    puts("#{player.name} wins the game")
   end
 
   def show_init_message
-    puts("-------------------")
-    puts(" Welcome to Endbee")
-    puts("-------------------")
+    @console_formatter.print_message_between_dashes("Welcome to Endbee")
   end
 
   def game_loop
-    self.play_round
+    while !@game.someone_lost
+      self.display_game_state
+      self.play_round
+      player = @game.last_player
+      puts
+      self.display_result(player)
+      puts
+      self.compute_round_result(player)
+      @game.reset_fragment
+    end
+  end
+
+  def compute_round_result(player)
+    game_over_word = @game.game_over_word
+    player.add_letter_to_game_over_word(game_over_word)
+    @game.increase_round
+  end
+
+  def display_result(player)
+    player_name = player.name
+    fragment = @game.fragment.join
+    puts("#{player_name} form '#{fragment}' and lost the round")
   end
 
   def play_round
@@ -29,8 +55,19 @@ class ConsoleInterface
       self.display_player_turn(player)
       new_letter = get_letter_from_player(player)
       @game.add_letter(new_letter)
-
       @game.next_turn
+    end
+  end
+
+  def display_game_state
+    puts("-----------------------  Round #{@game.round}  -----------------------")
+    puts("Game State: ")
+    players = @game.players
+
+    players.each do |player|
+      player_name = player.name
+      player_game_over_word = player.game_over_word
+      @console_formatter.print_indented_message("#{player_name}: #{player_game_over_word}\n")
     end
   end
 
@@ -47,7 +84,7 @@ class ConsoleInterface
         return new_letter
       end
 
-      @console_formatter.print_formatted_text("Invalid play, try again\n")
+      @console_formatter.print_indented_message("Invalid play, try again\n")
     end
   end
 end
