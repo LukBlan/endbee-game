@@ -59,4 +59,8 @@ class Game
   def get_winner
     @players[0]
   end
+
+  def get_formed_word
+    @dictionary.word
+  end
 end

@@ -42,7 +42,7 @@ class ConsoleInterface
 
   def display_result(player)
     player_name = player.name
-    fragment = @game.fragment.join
+    fragment = @game.get_formed_word
     puts("#{player_name} form word '#{fragment}' and lost the round")
   end
 

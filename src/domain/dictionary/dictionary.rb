@@ -1,6 +1,9 @@
 class Dictionary
+  attr_reader :word
+
   def initialize(dictionary)
     @dictionary = dictionary
+    @word = nil
   end
 
   def valid_word(word)
@@ -38,8 +41,9 @@ class Dictionary
       dict_words = @dictionary[char]
 
       dict_words.any? do |dict_word|
-        if dict_word.length == word.length
-          dict_word_includes_word_chars(dict_word, word_hash.clone)
+        if dict_word.length == word.length && dict_word_includes_word_chars(dict_word, word_hash.clone)
+          @word = dict_word
+          true
         else
           false
         end
