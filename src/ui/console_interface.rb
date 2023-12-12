@@ -1,13 +1,30 @@
 class ConsoleInterface
-  def initialize(game, console_formatter)
-    @game = game
+  def initialize(console_formatter)
     @console_formatter = console_formatter
+    @game = nil
   end
 
-  def init
+  def init(game_factory)
     self.show_init_message
+    self.configure_game(game_factory)
     self.game_loop
     self.show_game_result
+  end
+
+  def configure_game(game_factory)
+    puts("Starting configuration...")
+    players_names = []
+    @console_formatter.print_indented_message("Amount of players? ")
+    players_amount = gets.chomp.to_i
+
+    players_amount.times do |number|
+      message = "Player #{number + 1} name: "
+      @console_formatter.print_indented_message(message)
+      players_name = gets.chomp
+      players_names << players_name
+    end
+
+    @game = game_factory.create(players_names)
   end
 
   def show_game_result

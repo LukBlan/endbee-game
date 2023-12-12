@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Game
   attr_reader :fragment, :players, :game_over_word, :round
 
