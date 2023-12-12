@@ -42,15 +42,21 @@ class Game
     @fragment.length >= 3 && @dictionary.have_word?(@fragment)
   end
 
-  def someone_lost
-    @players.any? { |player| player.lost_game?(@game_over_word) }
+  def one_player_standing?
+    @players.length == 1
   end
 
   def reset_fragment
     @fragment = []
   end
 
+  def remove_player_if_lost
+    @players.each_with_index do |player, index|
+      @players.delete_at(index) if player.lost_game?(@game_over_word)
+    end
+  end
+
   def get_winner
-    @players.find { |player| !player.lost_game?(@game_over_word) }
+    @players[0]
   end
 end

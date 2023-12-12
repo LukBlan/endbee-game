@@ -13,7 +13,7 @@ class ConsoleInterface
   def show_game_result
     player = @game.get_winner
     @console_formatter.print_message_between_dashes("GAME OVER")
-    puts("#{player.name} wins the game")
+    @console_formatter.display_center_message("#{player.name} Wins")
   end
 
   def show_init_message
@@ -21,7 +21,7 @@ class ConsoleInterface
   end
 
   def game_loop
-    while !@game.someone_lost
+    while !@game.one_player_standing?
       self.display_game_state
       self.play_round
       player = @game.last_player
@@ -36,13 +36,14 @@ class ConsoleInterface
   def compute_round_result(player)
     game_over_word = @game.game_over_word
     player.add_letter_to_game_over_word(game_over_word)
+    @game.remove_player_if_lost
     @game.increase_round
   end
 
   def display_result(player)
     player_name = player.name
     fragment = @game.fragment.join
-    puts("#{player_name} form '#{fragment}' and lost the round")
+    puts("#{player_name} form word '#{fragment}' and lost the round")
   end
 
   def play_round
