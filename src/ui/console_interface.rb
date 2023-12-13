@@ -100,7 +100,7 @@ class ConsoleInterface
   end
 
   def display_game_state
-    puts("-----------------------  Round #{@game.round}  -----------------------")
+    @console_formatter.show_round_message("Round #{@game.round}")
     puts("Game State: ")
     players = @game.players
 

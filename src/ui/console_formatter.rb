@@ -5,8 +5,18 @@ class ConsoleFormatter
     print("    - #{message}")
   end
 
+  def show_round_message(message)
+    line_length = (CONSOLE_LENGTH - message.length) / 2 - 1
+    text = ""
+
+    text += get_line(line_length)
+    text += " #{message} "
+    text += get_line(line_length)
+    puts(text)
+  end
+
   def print_message_between_dashes(message)
-    line = self.get_line
+    line = self.get_line(CONSOLE_LENGTH)
 
     puts(line)
     display_center_message(message)
@@ -26,9 +36,9 @@ class ConsoleFormatter
     center_message
   end
 
-  def get_line
+  def get_line(amount)
     line = ""
-    CONSOLE_LENGTH.times { line += "-" }
+    amount.times { line += "-" }
     line
   end
 
